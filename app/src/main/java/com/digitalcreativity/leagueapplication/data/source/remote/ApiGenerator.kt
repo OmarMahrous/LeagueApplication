@@ -7,13 +7,19 @@ object ApiGenerator {
 
     private val BASE_URL = "http://api.football-data.org/v2/competitions"
 
-    fun <T> setupBaseApi(apiClass: Class<T>): T {
+    private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
 
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+
+    fun initRetrofit(): Retrofit {
+
+        return retrofitBuilder.baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
 //            .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
             .build()
+
+    }
+
+    fun <T> createApiService(retrofit: Retrofit, apiClass: Class<T>):T{
         return retrofit.create(apiClass)
     }
 
