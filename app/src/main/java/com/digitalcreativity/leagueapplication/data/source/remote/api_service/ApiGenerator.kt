@@ -1,5 +1,6 @@
 package com.digitalcreativity.leagueapplication.data.source.remote
 
+import com.digitalcreativity.leagueapplication.data.source.remote.api_service.ApiUtil
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -1,5 +1,9 @@
 package com.digitalcreativity.leagueapplication.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "team_table")
 data class Team(val id:Int?,
                 val area:Area?,
                 val name:String?,
@@ -13,4 +17,6 @@ data class Team(val id:Int?,
                 val founded:Int?,
                 val clubColors:String?,
                 val venue:String?,
-                val lastUpdated:String?)
+                val lastUpdated:String?,
+                @PrimaryKey(autoGenerate = true) val teamId: Int
+)

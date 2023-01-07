@@ -1,7 +1,10 @@
 package com.digitalcreativity.leagueapplication.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 
+@Entity(tableName = "competition_table")
 data class Competition(val id:Int?,
                        val area:Area?,
                        val name:String?,
@@ -9,7 +12,8 @@ data class Competition(val id:Int?,
                        val plan:String?,
                        val currentSeason:CurrentSeason?,
                        val numberOfAvailableSeasons:Int?,
-                       val lastUpdated:String?
+                       val lastUpdated:String?,
+                       @PrimaryKey(autoGenerate = true) val comptId: Int
 )
 
 data class Area(val id:Int?,

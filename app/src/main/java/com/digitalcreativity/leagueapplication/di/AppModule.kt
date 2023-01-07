@@ -25,3 +25,5 @@ private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit{
 private fun provideOkHttpClient()=ApiGenerator.addOkHttpClient()
 
 private fun provideNetworkHelper(context:Context) = NetworkHelper(context)
+
+
