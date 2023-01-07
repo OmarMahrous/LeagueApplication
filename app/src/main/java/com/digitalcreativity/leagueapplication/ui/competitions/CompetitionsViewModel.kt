@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CompetitionsViewModel(
-    val competitionsApi: CompetitionsApi, val leagueDatabase: LeagueDatabase
+     competitionsApi: CompetitionsApi,leagueDatabase: LeagueDatabase
 ) : ViewModel() {
 
     private val competitionsRepository:CompetitionsRepository

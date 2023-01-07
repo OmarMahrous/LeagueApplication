@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface TeamsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTeams(teamList: List<Team>)
+    suspend fun insertTeams(teamList: List<Team>?)
 
 
     @Query("SELECT * FROM team_table")

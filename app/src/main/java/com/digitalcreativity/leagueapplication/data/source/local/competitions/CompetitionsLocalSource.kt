@@ -27,7 +27,7 @@ class CompetitionsLocalSource(val leagueDatabase:LeagueDatabase) : DataSource<Li
     }
 
 
-    fun getCompetitionById(comptId:Int): Flow<Competition> {
+    fun getCompetitionById(comptId:Int): Competition {
         return leagueDatabase.competitionsDao().getCompetitionById(comptId)
     }
 

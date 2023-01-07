@@ -50,7 +50,8 @@ private fun getCompetitionsFromLocal():Flow<Resource<List<Competition?>>>{
     val mutableStateFlow: MutableStateFlow<Resource<List<Competition?>>> =
         MutableStateFlow(Resource.success(localDataSource.getCompetitions()))
 
-    return mutableStateFlow.asStateFlow()
+
+    return mutableStateFlow
 }
 
     override fun getCompetitions(): Flow<Resource<List<Competition?>>> {
@@ -81,7 +82,6 @@ private fun getCompetitionsFromLocal():Flow<Resource<List<Competition?>>>{
                     else-> Log.d(TAG, "loadResultFromRemote: loading")
                 }
             }
-
 
     }
 

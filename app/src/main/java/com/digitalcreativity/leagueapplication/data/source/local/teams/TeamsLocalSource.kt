@@ -13,7 +13,7 @@ class TeamsLocalSource(val leagueDatabase: LeagueDatabase) : DataSource<List<Tea
 
 
 
-    suspend fun saveTeams(teamList: List<Team>) {
+    suspend fun saveTeams(teamList: List<Team>?) {
         try {
             leagueDatabase.teamsDao().insertTeams(teamList)
         } catch (e: Exception) {
@@ -22,7 +22,7 @@ class TeamsLocalSource(val leagueDatabase: LeagueDatabase) : DataSource<List<Tea
         }
     }
 
-    fun getTeams(): List<Team?>? {
+    fun getTeams(): List<Team> {
         return leagueDatabase.teamsDao().getTeams()
     }
 
