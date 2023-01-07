@@ -1,5 +1,6 @@
 package com.digitalcreativity.leagueapplication.data.source.remote.competitions
 
+import com.digitalcreativity.leagueapplication.LeagueApp
 import com.digitalcreativity.leagueapplication.data.model.Competition
 import com.digitalcreativity.leagueapplication.data.util.DataSource
 import com.digitalcreativity.leagueapplication.data.util.Resource
@@ -30,7 +31,10 @@ class CompetitionsRemoteSource(val competitionsApi: CompetitionsApi) : DataSourc
                 val dataCount = competitionsResponse?.count
 
                 if (dataCount !=0){
-                    competitionsResponse?.competitions?.let { mDataApi.value = Resource.success(it) }
+                    competitionsResponse?.competitions?.let {
+                        mDataApi.value = Resource.success(it)
+
+                    }
                 }else
                     mDataApi.value = Resource.error(response.message())
             }else
