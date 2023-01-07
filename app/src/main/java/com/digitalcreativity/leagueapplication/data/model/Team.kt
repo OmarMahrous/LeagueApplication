@@ -1,11 +1,12 @@
 package com.digitalcreativity.leagueapplication.data.model
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "team_table")
 data class Team(val id:Int?,
-                val area:Area?,
+                @Embedded val area:Area?,
                 val name:String?,
                 val shortName:String?,
                 val tla:String?,
