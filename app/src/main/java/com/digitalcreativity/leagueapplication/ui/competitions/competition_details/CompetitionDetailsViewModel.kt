@@ -9,10 +9,12 @@ import com.digitalcreativity.leagueapplication.data.repository.competition.Compe
 import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsApi
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsApi
+import com.digitalcreativity.leagueapplication.util.NetworkHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CompetitionDetailsViewModel(
+    networkHelper: NetworkHelper,
     comptId:Int,
     competitionDetailsApi: CompetitionDetailsApi,
     leagueDatabase: LeagueDatabase
@@ -22,10 +24,12 @@ class CompetitionDetailsViewModel(
 
     init {
         competitionDetailsRepository = CompetitionDetailsRepositoryImpl
-            .create(comptId,competitionDetailsApi, leagueDatabase)
+            .create(networkHelper,comptId,
+                competitionDetailsApi, leagueDatabase)
     }
 
     fun getCompetitionDetails(){
+
         competitionDetailsRepository.getCompetitionDetails()
     }
 
