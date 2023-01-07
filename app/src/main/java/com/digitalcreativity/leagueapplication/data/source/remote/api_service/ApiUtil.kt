@@ -1,4 +1,4 @@
-package com.digitalcreativity.leagueapplication.data.source.remote
+package com.digitalcreativity.leagueapplication.data.source.remote.api_service
 
 /**
  * Responsible for providing the base parameters for the endpoints

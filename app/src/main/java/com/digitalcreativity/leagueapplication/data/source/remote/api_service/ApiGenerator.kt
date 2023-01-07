@@ -1,4 +1,4 @@
-package com.digitalcreativity.leagueapplication.data.source.remote
+package com.digitalcreativity.leagueapplication.data.source.remote.api_service
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
