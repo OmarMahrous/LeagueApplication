@@ -20,26 +20,28 @@ class CompetitionDetailsRepositoryImpl : CompetitionDetailsRepository{
 
     private val comptId:Int
 
-    private val networkHelper = NetworkHelper(LeagueApp.getAppContext())
+    private val networkHelper: NetworkHelper
 
     private val remoteDataSource: CompetitionDetailsRemoteSource
     private val localDataSource: CompetitionsLocalSource
 
 
-    constructor(comptId:Int,remoteDataSource: CompetitionDetailsRemoteSource,
+    constructor(networkHelper: NetworkHelper,comptId:Int,remoteDataSource: CompetitionDetailsRemoteSource,
                 localDataSource: CompetitionsLocalSource
     )
     {
+        this.networkHelper = networkHelper
         this.comptId = comptId
         this.remoteDataSource = remoteDataSource
         this.localDataSource = localDataSource
     }
 
     companion object{
-        fun create(comptId: Int,competitionDetailsApi: CompetitionDetailsApi, leagueDatabase: LeagueDatabase): CompetitionDetailsRepository {
+        fun create(networkHelper: NetworkHelper,comptId: Int,competitionDetailsApi: CompetitionDetailsApi, leagueDatabase: LeagueDatabase): CompetitionDetailsRepository {
             val remoteDataSource = CompetitionDetailsRemoteSource(competitionDetailsApi)
             val localDataSource = CompetitionsLocalSource(leagueDatabase)
-            return CompetitionDetailsRepositoryImpl(comptId, remoteDataSource, localDataSource)
+            return CompetitionDetailsRepositoryImpl(networkHelper,comptId,
+                remoteDataSource, localDataSource)
         }
 
     }

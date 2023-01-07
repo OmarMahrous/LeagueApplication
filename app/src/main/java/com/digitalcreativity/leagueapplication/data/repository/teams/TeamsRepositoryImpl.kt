@@ -20,25 +20,27 @@ class TeamsRepositoryImpl : TeamsRepository {
 
     private val comptId:Int
 
-    private val networkHelper = NetworkHelper(LeagueApp.getAppContext())
+    private val networkHelper:NetworkHelper
 
     private val remoteDataSource: TeamsRemoteSource
     private val localDataSource: TeamsLocalSource
 
 
-    constructor(comptId:Int, remoteDataSource: TeamsRemoteSource,
+    constructor(networkHelper: NetworkHelper,comptId:Int, remoteDataSource: TeamsRemoteSource,
                 localDataSource: TeamsLocalSource
     ) {
+        this.networkHelper = networkHelper
         this.comptId = comptId
         this.remoteDataSource = remoteDataSource
         this.localDataSource = localDataSource
     }
 
     companion object{
-        fun create(comptId: Int, teamsApi: TeamsApi, leagueDatabase: LeagueDatabase): TeamsRepository {
+        fun create(networkHelper: NetworkHelper,comptId: Int, teamsApi: TeamsApi, leagueDatabase: LeagueDatabase): TeamsRepository {
             val remoteDataSource = TeamsRemoteSource(teamsApi)
             val localDataSource = TeamsLocalSource(leagueDatabase)
-            return TeamsRepositoryImpl(comptId, remoteDataSource, localDataSource)
+            return TeamsRepositoryImpl(networkHelper,comptId,
+                remoteDataSource, localDataSource)
         }
 
     }

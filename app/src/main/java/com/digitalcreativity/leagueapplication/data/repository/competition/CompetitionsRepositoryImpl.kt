@@ -1,8 +1,6 @@
 package com.digitalcreativity.leagueapplication.data.repository.competition
 
-import android.content.Context
 import android.util.Log
-import com.digitalcreativity.leagueapplication.LeagueApp
 import com.digitalcreativity.leagueapplication.data.model.Competition
 import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
 import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsLocalSource
@@ -11,35 +9,33 @@ import com.digitalcreativity.leagueapplication.data.source.remote.competitions.C
 import com.digitalcreativity.leagueapplication.data.util.Resource
 import com.digitalcreativity.leagueapplication.data.util.Status
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 class CompetitionsRepositoryImpl : CompetitionsRepository{
 
     private val TAG = "CompetitionsRepositoryI"
 
-    private val networkHelper = NetworkHelper(LeagueApp.getAppContext())
+    private val networkHelper:NetworkHelper
 
     private val remoteDataSource: CompetitionsRemoteSource
     private val localDataSource: CompetitionsLocalSource
 
 
-    constructor(remoteDataSource: CompetitionsRemoteSource,
+    constructor(networkHelper: NetworkHelper,
+        remoteDataSource: CompetitionsRemoteSource,
         localDataSource: CompetitionsLocalSource
     )
     {
-
+        this.networkHelper = networkHelper
         this.remoteDataSource = remoteDataSource
         this.localDataSource = localDataSource
     }
 
     companion object{
-        fun create(competitionsApi: CompetitionsApi, leagueDatabase: LeagueDatabase): CompetitionsRepository {
+        fun create(networkHelper: NetworkHelper,competitionsApi: CompetitionsApi, leagueDatabase: LeagueDatabase): CompetitionsRepository {
             val remoteDataSource = CompetitionsRemoteSource(competitionsApi)
             val localDataSource = CompetitionsLocalSource(leagueDatabase)
-            return CompetitionsRepositoryImpl(remoteDataSource, localDataSource)
+            return CompetitionsRepositoryImpl(networkHelper, remoteDataSource, localDataSource)
         }
 
     }
