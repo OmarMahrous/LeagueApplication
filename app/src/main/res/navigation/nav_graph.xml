@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@layout/fragment_competitions">
+
+    <fragment android:id="@+id/competitions_fragment"
+        android:name="com.digitalcreativity.leagueapplication.ui.competitions.CompetitionsFragment"
+        tools:layout="@layout/fragment_competitions"
+        android:label="@string/competitions">
+        <action android:id="@+id/action_competitionsFragment_to_competitionDetailsFragment"
+            app:destination="@id/competition_details_fragment"/>
+    </fragment>
+
+    <fragment android:id="@+id/competition_details_fragment"
+        android:name="com.digitalcreativity.leagueapplication.ui.competitions.competition_details.CompetitionDetailsFragment"
+        tools:layout="@layout/fragment_competition_details"
+        android:label="@string/competition_details">
+        <action android:id="@+id/action_competitionDetailsFragment_to_teamDetailsFragment"
+            app:destination="@id/team_details_fragment"/>
+
+    </fragment>
+
+    <fragment android:id="@+id/team_details_fragment"
+        android:name="com.digitalcreativity.leagueapplication.ui.teams.TeamDetailsFragment"
+        tools:layout="@layout/fragment_team_details"
+        android:label="@string/team_details"/>
 
 </navigation>
