@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface BaseRepository {
 
-    fun getError(): Flow<String>
+    fun getError(): Flow<String?>
 
-    fun fetchData()
+    suspend fun fetchData()
 }
