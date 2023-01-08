@@ -66,6 +66,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
             android:text="@string/seasons"
             app:layout_constraintTop_toBottomOf="@+id/competition_plan" />
 
@@ -75,30 +76,30 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/teams_title"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/seasons_title"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/season_list_item" />
 
-        <TextView
-            android:id="@+id/teams_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="8dp"
-            android:text="@string/teams"
-            app:layout_constraintTop_toBottomOf="@+id/seasons_recycler_view"
-            app:layout_constraintBottom_toTopOf="@+id/teams_recycler_view" />
+<!--        <TextView-->
+<!--            android:id="@+id/teams_title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:text="@string/teams"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/seasons_recycler_view"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/teams_recycler_view" />-->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/teams_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/teams_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/team_list_item" />
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/teams_recycler_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/teams_title"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--            tools:listitem="@layout/team_list_item" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

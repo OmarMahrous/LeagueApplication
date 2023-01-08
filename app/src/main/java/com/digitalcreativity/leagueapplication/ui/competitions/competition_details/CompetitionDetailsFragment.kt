@@ -5,22 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.digitalcreativity.leagueapplication.R
 import com.digitalcreativity.leagueapplication.data.model.Competition
+import com.digitalcreativity.leagueapplication.data.model.CurrentSeason
 import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
-import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsApi
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsApi
 import com.digitalcreativity.leagueapplication.data.util.Status
 import com.digitalcreativity.leagueapplication.databinding.FragmentCompetitionDetailsBinding
-import com.digitalcreativity.leagueapplication.databinding.FragmentCompetitionsBinding
 import com.digitalcreativity.leagueapplication.ui.BaseFragment
-import com.digitalcreativity.leagueapplication.ui.competitions.CompetitionsAdapter
-import com.digitalcreativity.leagueapplication.ui.competitions.CompetitionsFragmentDirections
-import com.digitalcreativity.leagueapplication.ui.competitions.CompetitionsViewModel
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
@@ -51,7 +45,7 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
         _binding = FragmentCompetitionDetailsBinding.inflate(inflater, container, false)
 
 
-        initRecyclerViews()
+        initRecyclerView()
 
         initViewModel()
 
@@ -59,7 +53,7 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
     }
 
 
-    private fun initRecyclerViews() {
+    private fun initRecyclerView() {
         seasonListAdapter = SeasonsAdapter()
         binding.seasonsRecyclerView.adapter = seasonListAdapter
     }
@@ -87,8 +81,10 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
     private fun checkInternetConnection() {
         if (networkHelper.isNetworkConnected())
             getCompetitionDetails()
-        else
+        else {
             getCompetitionDetailsFromLocal()
+            getSeasonsFromLocal()
+        }
     }
 
     private fun fetchCompetitionDetails(){
@@ -101,8 +97,10 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
                 when (resource.status) {
                     Status.SUCCESS -> {
 
+                        val data = resource.data
 
-                        updateUiComponents(resource.data?.competitionInfo)
+                        updateUiComponents(data?.competitionInfo)
+                        updateSeasonsUiList(data?.seasons)
 
 
                         Log.d(TAG, "getCompetitionDetails: " +
@@ -127,7 +125,16 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
 
             }
         }
+    }
 
+    private fun getSeasonsFromLocal(){
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.getSeasonsFromLocal().collect { seasons ->
+
+                updateSeasonsUiList(seasons)
+
+            }
+        }
     }
 
     private fun updateUiComponents(competition: Competition?) {
@@ -151,6 +158,18 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
             }
         }
     }
+
+    private fun updateSeasonsUiList(seasonList: List<CurrentSeason>?) {
+        binding.seasonsRecyclerView.apply {
+            if (adapter==null)
+                adapter = seasonListAdapter
+
+            seasonListAdapter?.submitList(seasonList)
+
+        }
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
