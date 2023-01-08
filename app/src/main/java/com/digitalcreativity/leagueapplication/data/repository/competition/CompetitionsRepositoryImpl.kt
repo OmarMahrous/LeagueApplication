@@ -9,7 +9,11 @@ import com.digitalcreativity.leagueapplication.data.source.remote.competitions.C
 import com.digitalcreativity.leagueapplication.data.util.Resource
 import com.digitalcreativity.leagueapplication.data.util.Status
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class CompetitionsRepositoryImpl : CompetitionsRepository{
 
@@ -20,22 +24,26 @@ class CompetitionsRepositoryImpl : CompetitionsRepository{
     private val remoteDataSource: CompetitionsRemoteSource
     private val localDataSource: CompetitionsLocalSource
 
+    private val coroutineScope:CoroutineScope
 
     constructor(networkHelper: NetworkHelper,
         remoteDataSource: CompetitionsRemoteSource,
-        localDataSource: CompetitionsLocalSource
+        localDataSource: CompetitionsLocalSource,
+                coroutineScope:CoroutineScope
     )
     {
         this.networkHelper = networkHelper
         this.remoteDataSource = remoteDataSource
         this.localDataSource = localDataSource
+
+        this.coroutineScope = coroutineScope
     }
 
     companion object{
-        fun create(networkHelper: NetworkHelper,competitionsApi: CompetitionsApi, leagueDatabase: LeagueDatabase): CompetitionsRepository {
+        fun create(networkHelper: NetworkHelper,competitionsApi: CompetitionsApi, leagueDatabase: LeagueDatabase, coroutineScope: CoroutineScope): CompetitionsRepository {
             val remoteDataSource = CompetitionsRemoteSource(competitionsApi)
             val localDataSource = CompetitionsLocalSource(leagueDatabase)
-            return CompetitionsRepositoryImpl(networkHelper, remoteDataSource, localDataSource)
+            return CompetitionsRepositoryImpl(networkHelper, remoteDataSource, localDataSource, coroutineScope)
         }
 
     }
@@ -44,7 +52,11 @@ class CompetitionsRepositoryImpl : CompetitionsRepository{
 private fun getCompetitionsFromLocal():Flow<Resource<List<Competition?>>>{
 
     val mutableStateFlow: MutableStateFlow<Resource<List<Competition?>>> =
-        MutableStateFlow(Resource.success(localDataSource.getCompetitions()))
+        MutableStateFlow(Resource.loading())
+
+    coroutineScope.launch(Dispatchers.IO) {
+        mutableStateFlow.emit(Resource.success(localDataSource.getCompetitions()))
+    }
 
 
     return mutableStateFlow
@@ -69,7 +81,9 @@ private fun getCompetitionsFromLocal():Flow<Resource<List<Competition?>>>{
     }
 
     private suspend fun loadResultFromRemote() {
-            getCompetitions().collectLatest {
+        val competitionsFromRemote = getCompetitions()
+
+        competitionsFromRemote.collectLatest {
                 when(it.status){
                     Status.SUCCESS -> saveDataInCache(it.data)
 

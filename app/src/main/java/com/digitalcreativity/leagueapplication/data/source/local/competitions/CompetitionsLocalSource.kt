@@ -22,7 +22,7 @@ class CompetitionsLocalSource(val leagueDatabase:LeagueDatabase) : DataSource<Li
         }
     }
 
-    fun getCompetitions(): List<Competition?>? {
+     fun getCompetitions(): List<Competition?>? {
         return leagueDatabase.competitionsDao().getCompetitions()
     }
 

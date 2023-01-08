@@ -18,7 +18,7 @@ interface CompetitionsDao {
     fun getCompetitionsFlow(): Flow<List<Competition>>
 
     @Query("SELECT * FROM competition_table")
-    fun getCompetitions(): List<Competition>
+     fun getCompetitions(): List<Competition>
 
     @Query("SELECT * FROM competition_table WHERE (id == :comptId)")
     fun getCompetitionById(comptId: Int): Competition

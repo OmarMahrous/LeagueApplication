@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiGenerator {
 
-    private val BASE_URL = "http://api.football-data.org/v2/competitions"
+    private val BASE_URL = "http://api.football-data.org/v2/"
 
     private val retrofitBuilder: Retrofit.Builder = Retrofit.Builder()
 
