@@ -7,6 +7,7 @@ import com.digitalcreativity.leagueapplication.data.model.Competition
 import com.digitalcreativity.leagueapplication.data.repository.competition.CompetitionsRepository
 import com.digitalcreativity.leagueapplication.data.repository.competition.CompetitionsRepositoryImpl
 import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
+import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsApi
 import com.digitalcreativity.leagueapplication.data.util.Resource
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
@@ -17,19 +18,27 @@ import kotlinx.coroutines.launch
 class CompetitionsViewModel(
     networkHelper: NetworkHelper,
     competitionsApi: CompetitionsApi,
-    leagueDatabase: LeagueDatabase
+    competitionsDao: CompetitionsDao
 ) : ViewModel() {
 
     private val competitionsRepository:CompetitionsRepository
 
     init {
         competitionsRepository = CompetitionsRepositoryImpl
-            .create(networkHelper,competitionsApi, leagueDatabase, viewModelScope)
+            .create(networkHelper,competitionsApi, competitionsDao, viewModelScope)
     }
 
     fun getCompetitions(): Flow<Resource<List<Competition?>>> {
         return competitionsRepository.getCompetitions()
     }
+
+    fun getCompetitionsFromLocal(): Flow<List<Competition>> {
+
+        return competitionsRepository.getCompetitionsFromLocal()
+
+    }
+
+
 
     fun fetchData(){
         viewModelScope.launch(Dispatchers.IO) {
@@ -39,12 +48,12 @@ class CompetitionsViewModel(
 
     internal class CompetitionsViewModelFactory(val networkHelper: NetworkHelper,
                              val competitionsApi: CompetitionsApi,
-                             val leagueDatabase: LeagueDatabase)
+                             val competitionsDao: CompetitionsDao)
         : ViewModelProvider.Factory {
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(CompetitionsViewModel::class.java)){
-              CompetitionsViewModel(networkHelper, competitionsApi, leagueDatabase)  as T
+              CompetitionsViewModel(networkHelper, competitionsApi, competitionsDao)  as T
             }else
                 throw IllegalArgumentException("ViewModel not found")
         }

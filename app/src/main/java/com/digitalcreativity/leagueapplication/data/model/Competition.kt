@@ -21,10 +21,8 @@ data class Competition(val id:Int?,
 )
 
 data class Area(
-                @Ignore
                 @SerializedName("id")
                 var a_id:Int?=null,
-                @Ignore
                 @SerializedName("name")
                 var a_name:String?=null,
                 var countryCode:String?=null,

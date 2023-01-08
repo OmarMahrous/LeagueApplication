@@ -8,6 +8,7 @@ import com.digitalcreativity.leagueapplication.data.repository.competition.Compe
 import com.digitalcreativity.leagueapplication.data.repository.competition.CompetitionsRepository
 import com.digitalcreativity.leagueapplication.data.repository.competition.CompetitionsRepositoryImpl
 import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
+import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsApi
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsApi
 import com.digitalcreativity.leagueapplication.ui.competitions.CompetitionsViewModel
@@ -19,7 +20,7 @@ class CompetitionDetailsViewModel(
     networkHelper: NetworkHelper,
     comptId:Int,
     competitionDetailsApi: CompetitionDetailsApi,
-    leagueDatabase: LeagueDatabase
+    competitionsDao: CompetitionsDao
 ) : ViewModel() {
 
     private val competitionDetailsRepository: CompetitionDetailsRepository
@@ -27,7 +28,7 @@ class CompetitionDetailsViewModel(
     init {
         competitionDetailsRepository = CompetitionDetailsRepositoryImpl
             .create(networkHelper,comptId,
-                competitionDetailsApi, leagueDatabase)
+                competitionDetailsApi, competitionsDao)
     }
 
     fun getCompetitionDetails(){
@@ -44,12 +45,12 @@ class CompetitionDetailsViewModel(
     inner class CompetitionDetailsViewModelFactory(val networkHelper: NetworkHelper,
                                                    val comptId:Int,
                                                    val competitionDetailsApi: CompetitionDetailsApi,
-                                                   val leagueDatabase: LeagueDatabase)
+                                                   val competitionsDao: CompetitionsDao)
         : ViewModelProvider.Factory {
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(CompetitionDetailsViewModel::class.java)){
-                CompetitionDetailsViewModel(networkHelper, comptId, competitionDetailsApi, leagueDatabase)  as T
+                CompetitionDetailsViewModel(networkHelper, comptId, competitionDetailsApi, competitionsDao)  as T
             }else
                 throw IllegalArgumentException("ViewModel not found")
         }

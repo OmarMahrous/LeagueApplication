@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.digitalcreativity.leagueapplication.R
 import com.digitalcreativity.leagueapplication.data.model.Competition
 import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
+import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
 import com.digitalcreativity.leagueapplication.data.source.remote.ApiGenerator
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsApi
 import com.digitalcreativity.leagueapplication.data.util.Status
@@ -32,7 +33,7 @@ class CompetitionsFragment : BaseFragment(R.layout.fragment_competitions) {
 
     private val networkHelper:NetworkHelper by inject()
     private val competitionsApi:CompetitionsApi by inject()
-    private val leagueDatabase:LeagueDatabase by inject()
+    private val competitionsDao:CompetitionsDao by inject()
 
     private var _binding: FragmentCompetitionsBinding? =null
     private val binding: FragmentCompetitionsBinding get() =_binding!!
@@ -64,7 +65,7 @@ class CompetitionsFragment : BaseFragment(R.layout.fragment_competitions) {
     private fun initViewModel() {
 
         val viewModelFactory = CompetitionsViewModel
-            .CompetitionsViewModelFactory(networkHelper, competitionsApi, leagueDatabase)
+            .CompetitionsViewModelFactory(networkHelper, competitionsApi, competitionsDao)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[CompetitionsViewModel::class.java]
 
@@ -76,9 +77,16 @@ class CompetitionsFragment : BaseFragment(R.layout.fragment_competitions) {
 
         fetchCompetitions()
 
-        getCompetitions()
 
+        checkInternetConnection()
 
+    }
+
+    private fun checkInternetConnection() {
+        if (networkHelper.isNetworkConnected())
+            getCompetitions()
+        else
+            getCompetitionsFromLocal()
     }
 
     private fun fetchCompetitions(){
@@ -107,6 +115,20 @@ class CompetitionsFragment : BaseFragment(R.layout.fragment_competitions) {
 
         }
     }
+
+    private fun getCompetitionsFromLocal(){
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.getCompetitionsFromLocal().collect { list ->
+
+
+                Log.d(TAG, "getCompetitionsFromLocal: list = ${list.size}")
+                        updateUiListComponent(list)
+
+                }
+            }
+
+    }
+
 
 
     private fun updateUiListComponent(competitionList: List<Competition?>?) {

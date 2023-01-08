@@ -1,13 +1,13 @@
 package com.digitalcreativity.leagueapplication.data.source.local.competitions
 
+import androidx.annotation.VisibleForTesting
 import androidx.room.*
 import com.digitalcreativity.leagueapplication.data.model.Competition
 import kotlinx.coroutines.flow.Flow
 
+
 @Dao
 interface CompetitionsDao {
-
-
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -22,5 +22,10 @@ interface CompetitionsDao {
 
     @Query("SELECT * FROM competition_table WHERE (id == :comptId)")
     fun getCompetitionById(comptId: Int): Competition
+
+
+    @VisibleForTesting
+    @Query("DELETE FROM competition_table")
+    suspend fun deleteAllCompetitions()
 
 }

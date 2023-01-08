@@ -1,12 +1,11 @@
 package com.digitalcreativity.leagueapplication.data.source.local.competitions
 
 import com.digitalcreativity.leagueapplication.data.model.Competition
-import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
 import com.digitalcreativity.leagueapplication.data.util.DataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class CompetitionsLocalSource(val leagueDatabase:LeagueDatabase) : DataSource<List<Competition>>{
+class CompetitionsLocalSource(val competitionsDao: CompetitionsDao) : DataSource<List<Competition>>{
 
     private val mError: MutableStateFlow<String?> = MutableStateFlow("")
 
@@ -15,25 +14,29 @@ class CompetitionsLocalSource(val leagueDatabase:LeagueDatabase) : DataSource<Li
 
     suspend fun saveCompetitions(competitionList: List<Competition?>?) {
         try {
-            leagueDatabase.competitionsDao().insertCompetitions(competitionList)
+            competitionsDao.insertCompetitions(competitionList)
         } catch (e: Exception) {
             e.printStackTrace()
             mError.value = (e.message)
         }
     }
 
+    suspend fun deleteAllCompetitions(){
+        competitionsDao.deleteAllCompetitions()
+    }
+
      fun getCompetitions(): List<Competition?>? {
-        return leagueDatabase.competitionsDao().getCompetitions()
+        return competitionsDao.getCompetitions()
     }
 
 
     fun getCompetitionById(comptId:Int): Competition {
-        return leagueDatabase.competitionsDao().getCompetitionById(comptId)
+        return competitionsDao.getCompetitionById(comptId)
     }
 
     override fun getData(): Flow<List<Competition>> {
 
-        return leagueDatabase.competitionsDao().getCompetitionsFlow()
+        return competitionsDao.getCompetitionsFlow()
 
     }
 

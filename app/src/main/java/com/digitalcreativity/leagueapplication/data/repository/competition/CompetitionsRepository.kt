@@ -10,4 +10,6 @@ interface CompetitionsRepository : BaseRepository {
 
     fun getCompetitions(): Flow<Resource<List<Competition?>>>
 
+    fun getCompetitionsFromLocal(): Flow<List<Competition>>
+
 }

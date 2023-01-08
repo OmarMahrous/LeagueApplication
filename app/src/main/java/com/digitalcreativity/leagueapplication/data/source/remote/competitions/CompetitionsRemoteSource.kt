@@ -24,24 +24,29 @@ class CompetitionsRemoteSource(val competitionsApi: CompetitionsApi) : DataSourc
     }
 
     suspend fun fetch(){
-        val response = competitionsApi.getCompetitions()
-        withContext(Dispatchers.Main){
-            if (response.isSuccessful){
-                val competitionsResponse = response.body()
-                val dataCount = competitionsResponse?.count
+        try {
+            val response = competitionsApi.getCompetitions()
+            withContext(Dispatchers.Main){
+                if (response.isSuccessful){
+                    val competitionsResponse = response.body()
+                    val dataCount = competitionsResponse?.count
 
-                if (dataCount !=0){
-                    competitionsResponse?.competitions?.let {
-                        mDataApi.value = Resource.success(it)
+                    if (dataCount !=0){
+                        competitionsResponse?.competitions?.let {
+                            mDataApi.value = Resource.success(it)
 
-                    }
+                        }
+                    }else
+                        mDataApi.value = Resource.error(response.message())
                 }else
                     mDataApi.value = Resource.error(response.message())
-            }else
-                mDataApi.value = Resource.error(response.message())
 
 
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
         }
+
     }
 
 

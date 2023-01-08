@@ -2,7 +2,7 @@ package com.digitalcreativity.leagueapplication.data.repository.competition
 
 import android.util.Log
 import com.digitalcreativity.leagueapplication.data.model.Competition
-import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
+import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
 import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsLocalSource
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsApi
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsRemoteSource
@@ -10,10 +10,7 @@ import com.digitalcreativity.leagueapplication.data.util.Resource
 import com.digitalcreativity.leagueapplication.data.util.Status
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 class CompetitionsRepositoryImpl : CompetitionsRepository{
 
@@ -40,33 +37,34 @@ class CompetitionsRepositoryImpl : CompetitionsRepository{
     }
 
     companion object{
-        fun create(networkHelper: NetworkHelper,competitionsApi: CompetitionsApi, leagueDatabase: LeagueDatabase, coroutineScope: CoroutineScope): CompetitionsRepository {
+        fun create(networkHelper: NetworkHelper,competitionsApi: CompetitionsApi, competitionsDao: CompetitionsDao, coroutineScope: CoroutineScope): CompetitionsRepository {
             val remoteDataSource = CompetitionsRemoteSource(competitionsApi)
-            val localDataSource = CompetitionsLocalSource(leagueDatabase)
+            val localDataSource = CompetitionsLocalSource(competitionsDao)
             return CompetitionsRepositoryImpl(networkHelper, remoteDataSource, localDataSource, coroutineScope)
         }
 
     }
 
 
-private fun getCompetitionsFromLocal():Flow<Resource<List<Competition?>>>{
+override fun getCompetitionsFromLocal(): Flow<List<Competition>> {
 
-    val mutableStateFlow: MutableStateFlow<Resource<List<Competition?>>> =
-        MutableStateFlow(Resource.loading())
 
-    coroutineScope.launch(Dispatchers.IO) {
-        mutableStateFlow.emit(Resource.success(localDataSource.getCompetitions()))
+    return try{
+        val localData = localDataSource.getData()
+
+
+        localData
+
+    }catch (e:Exception){
+        Log.e(TAG, "getCompetitionsFromLocal: error = ${e.message}" )
+
+        flowOf()
     }
 
-
-    return mutableStateFlow
 }
 
     override fun getCompetitions(): Flow<Resource<List<Competition?>>> {
-        return if (networkHelper.isNetworkConnected())
-                    remoteDataSource.getData()
-               else
-                    getCompetitionsFromLocal()
+              return remoteDataSource.getData()
     }
 
     override fun getError(): Flow<String?> {
@@ -96,6 +94,8 @@ private fun getCompetitionsFromLocal():Flow<Resource<List<Competition?>>>{
     }
 
     private suspend fun saveDataInCache(competitions: List<Competition?>?) {
+
+        localDataSource.deleteAllCompetitions() // Reset data
         localDataSource.saveCompetitions(competitions)
     }
 

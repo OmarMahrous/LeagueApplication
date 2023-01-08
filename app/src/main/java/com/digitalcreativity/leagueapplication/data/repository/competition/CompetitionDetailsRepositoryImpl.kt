@@ -4,6 +4,7 @@ import android.util.Log
 import com.digitalcreativity.leagueapplication.LeagueApp
 import com.digitalcreativity.leagueapplication.data.model.Competition
 import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
+import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
 import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsLocalSource
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsApi
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsRemoteSource
@@ -37,9 +38,9 @@ class CompetitionDetailsRepositoryImpl : CompetitionDetailsRepository{
     }
 
     companion object{
-        fun create(networkHelper: NetworkHelper,comptId: Int,competitionDetailsApi: CompetitionDetailsApi, leagueDatabase: LeagueDatabase): CompetitionDetailsRepository {
+        fun create(networkHelper: NetworkHelper,comptId: Int,competitionDetailsApi: CompetitionDetailsApi, competitionsDao: CompetitionsDao): CompetitionDetailsRepository {
             val remoteDataSource = CompetitionDetailsRemoteSource(competitionDetailsApi)
-            val localDataSource = CompetitionsLocalSource(leagueDatabase)
+            val localDataSource = CompetitionsLocalSource(competitionsDao)
             return CompetitionDetailsRepositoryImpl(networkHelper,comptId,
                 remoteDataSource, localDataSource)
         }
