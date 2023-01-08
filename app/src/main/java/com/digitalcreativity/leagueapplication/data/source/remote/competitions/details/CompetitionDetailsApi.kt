@@ -8,8 +8,8 @@ import retrofit2.http.Query
 
 interface CompetitionDetailsApi {
 
-    @GET("competitions/{comptId}")
-    suspend fun getCompetitionDetails(@Path("id")comptId: Int) : Response<CompetitionDetailsResponse>
+    @GET("competitions/{id}")
+    suspend fun getCompetitionDetails(@Path("id")id: Int) : Response<CompetitionDetailsResponse>
 
 
 }

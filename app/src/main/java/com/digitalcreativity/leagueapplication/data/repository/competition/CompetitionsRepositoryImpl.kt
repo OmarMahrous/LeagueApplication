@@ -8,7 +8,6 @@ import com.digitalcreativity.leagueapplication.data.source.remote.competitions.C
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsRemoteSource
 import com.digitalcreativity.leagueapplication.data.util.Resource
 import com.digitalcreativity.leagueapplication.data.util.Status
-import com.digitalcreativity.leagueapplication.util.NetworkHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 
@@ -16,20 +15,18 @@ class CompetitionsRepositoryImpl : CompetitionsRepository{
 
     private val TAG = "CompetitionsRepositoryI"
 
-    private val networkHelper:NetworkHelper
 
     private val remoteDataSource: CompetitionsRemoteSource
     private val localDataSource: CompetitionsLocalSource
 
     private val coroutineScope:CoroutineScope
 
-    constructor(networkHelper: NetworkHelper,
+    constructor(
         remoteDataSource: CompetitionsRemoteSource,
         localDataSource: CompetitionsLocalSource,
                 coroutineScope:CoroutineScope
     )
     {
-        this.networkHelper = networkHelper
         this.remoteDataSource = remoteDataSource
         this.localDataSource = localDataSource
 
@@ -37,10 +34,10 @@ class CompetitionsRepositoryImpl : CompetitionsRepository{
     }
 
     companion object{
-        fun create(networkHelper: NetworkHelper,competitionsApi: CompetitionsApi, competitionsDao: CompetitionsDao, coroutineScope: CoroutineScope): CompetitionsRepository {
+        fun create(competitionsApi: CompetitionsApi, competitionsDao: CompetitionsDao, coroutineScope: CoroutineScope): CompetitionsRepository {
             val remoteDataSource = CompetitionsRemoteSource(competitionsApi)
             val localDataSource = CompetitionsLocalSource(competitionsDao)
-            return CompetitionsRepositoryImpl(networkHelper, remoteDataSource, localDataSource, coroutineScope)
+            return CompetitionsRepositoryImpl( remoteDataSource, localDataSource, coroutineScope)
         }
 
     }
@@ -83,7 +80,7 @@ override fun getCompetitionsFromLocal(): Flow<List<Competition>> {
 
         competitionsFromRemote.collectLatest {
                 when(it.status){
-                    Status.SUCCESS -> saveDataInCache(it.data)
+                    Status.SUCCESS -> saveCompetitionsInCache(it.data)
 
                     Status.ERROR -> Log.e(TAG, "loadResultFromRemote: ${it.message}" )
 
@@ -93,10 +90,12 @@ override fun getCompetitionsFromLocal(): Flow<List<Competition>> {
 
     }
 
-    private suspend fun saveDataInCache(competitions: List<Competition?>?) {
+    private suspend fun saveCompetitionsInCache(competitions: List<Competition?>?) {
 
         localDataSource.deleteAllCompetitions() // Reset data
         localDataSource.saveCompetitions(competitions)
     }
+
+
 
 }

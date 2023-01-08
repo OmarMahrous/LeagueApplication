@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class CompetitionsViewModel(
-    networkHelper: NetworkHelper,
     competitionsApi: CompetitionsApi,
     competitionsDao: CompetitionsDao
 ) : ViewModel() {
@@ -25,7 +24,7 @@ class CompetitionsViewModel(
 
     init {
         competitionsRepository = CompetitionsRepositoryImpl
-            .create(networkHelper,competitionsApi, competitionsDao, viewModelScope)
+            .create(competitionsApi, competitionsDao, viewModelScope)
     }
 
     fun getCompetitions(): Flow<Resource<List<Competition?>>> {
@@ -46,14 +45,14 @@ class CompetitionsViewModel(
         }
     }
 
-    internal class CompetitionsViewModelFactory(val networkHelper: NetworkHelper,
+    internal class CompetitionsViewModelFactory(
                              val competitionsApi: CompetitionsApi,
                              val competitionsDao: CompetitionsDao)
         : ViewModelProvider.Factory {
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(CompetitionsViewModel::class.java)){
-              CompetitionsViewModel(networkHelper, competitionsApi, competitionsDao)  as T
+              CompetitionsViewModel( competitionsApi, competitionsDao)  as T
             }else
                 throw IllegalArgumentException("ViewModel not found")
         }

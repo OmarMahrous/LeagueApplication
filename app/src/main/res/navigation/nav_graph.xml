@@ -15,8 +15,7 @@
 
     <fragment android:id="@+id/competition_details_fragment"
         android:name="com.digitalcreativity.leagueapplication.ui.competitions.competition_details.CompetitionDetailsFragment"
-        tools:layout="@layout/fragment_competition_details"
-        android:label="@string/competition_details">
+        tools:layout="@layout/fragment_competition_details">
         <action android:id="@+id/action_competitionDetailsFragment_to_teamDetailsFragment"
             app:destination="@id/team_details_fragment"/>
 

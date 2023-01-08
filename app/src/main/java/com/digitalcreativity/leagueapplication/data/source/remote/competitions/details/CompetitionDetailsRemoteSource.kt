@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 
 class CompetitionDetailsRemoteSource(val competitionDetailsApi: CompetitionDetailsApi) :
-        DataSource<Resource<Competition>> {
+        DataSource<Resource<CompetitionDetailsResponse>> {
 
     private val TAG = "CompetitionDetailsRemot"
 
-        private val mDataApi: MutableStateFlow<Resource<Competition>> = MutableStateFlow(
+        private val mDataApi: MutableStateFlow<Resource<CompetitionDetailsResponse>> = MutableStateFlow(
             Resource.loading())
 
-        override fun getData(): Flow<Resource<Competition>> {
+        override fun getData(): Flow<Resource<CompetitionDetailsResponse>> {
             return mDataApi
 
         }
@@ -28,20 +28,25 @@ class CompetitionDetailsRemoteSource(val competitionDetailsApi: CompetitionDetai
         }
 
         suspend fun fetch(comptId:Int){
-            val response = competitionDetailsApi.getCompetitionDetails(comptId)
-            withContext(Dispatchers.Main){
-                if (response.isSuccessful){
-                    val competitionResponse = response.body()
+            try {
+                val response = competitionDetailsApi.getCompetitionDetails(comptId)
+                withContext(Dispatchers.Main){
+                    if (response.isSuccessful){
+                        val competitionResponse = response.body()
 
-                    if (response.code() == 200){
-                        competitionResponse?.competitionInfo?.let { mDataApi.value = Resource.success(it) }
+                        if (response.code() == 200){
+                            competitionResponse?.let { mDataApi.value = Resource.success(it) }
+                        }else
+                            mDataApi.value = Resource.error(response.message())
                     }else
                         mDataApi.value = Resource.error(response.message())
-                }else
-                    mDataApi.value = Resource.error(response.message())
 
 
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
             }
+
         }
 
 

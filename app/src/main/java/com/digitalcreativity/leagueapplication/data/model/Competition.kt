@@ -29,10 +29,22 @@ data class Area(
                 var ensignUrl:String?=null
                 )
 
+@Entity(tableName = "season_table")
 data class CurrentSeason(@Ignore
                          @SerializedName("id")
                          var s_id:Int?=null,
                          var startDate:String?=null,
                          var endDate:String?=null,
-                         var currentMatchday:Int?=null
-                         )
+                         var currentMatchday:Int?=null,
+                         @Embedded var winner:Winner?=null,
+                         @PrimaryKey(autoGenerate = true) var seasonId: Int?=null
+)
+
+data class Winner(@Ignore
+                  @SerializedName("id")
+                  var w_id:Int?=null,
+                  @SerializedName("name")
+                  var w_name:String?=null,
+                  var tla:String?=null,
+                  var crestUrl:String?=null
+)

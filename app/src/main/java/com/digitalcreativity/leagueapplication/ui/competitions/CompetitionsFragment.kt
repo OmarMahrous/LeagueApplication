@@ -65,7 +65,7 @@ class CompetitionsFragment : BaseFragment(R.layout.fragment_competitions) {
     private fun initViewModel() {
 
         val viewModelFactory = CompetitionsViewModel
-            .CompetitionsViewModelFactory(networkHelper, competitionsApi, competitionsDao)
+            .CompetitionsViewModelFactory(competitionsApi, competitionsDao)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[CompetitionsViewModel::class.java]
 
@@ -129,8 +129,6 @@ class CompetitionsFragment : BaseFragment(R.layout.fragment_competitions) {
 
     }
 
-
-
     private fun updateUiListComponent(competitionList: List<Competition?>?) {
         binding.competitionsRecyclerView.apply {
             if (adapter==null)
@@ -139,8 +137,6 @@ class CompetitionsFragment : BaseFragment(R.layout.fragment_competitions) {
             listAdapter?.submitList(competitionList)
 
         }
-
-
     }
 
     override fun onDestroyView() {

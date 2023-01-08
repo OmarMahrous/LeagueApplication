@@ -3,6 +3,8 @@ package com.digitalcreativity.leagueapplication.ui.competitions.competition_deta
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.digitalcreativity.leagueapplication.data.model.Competition
+import com.digitalcreativity.leagueapplication.data.model.CurrentSeason
 import com.digitalcreativity.leagueapplication.data.repository.competition.CompetitionDetailsRepository
 import com.digitalcreativity.leagueapplication.data.repository.competition.CompetitionDetailsRepositoryImpl
 import com.digitalcreativity.leagueapplication.data.repository.competition.CompetitionsRepository
@@ -11,13 +13,15 @@ import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
 import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsApi
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsApi
+import com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsResponse
+import com.digitalcreativity.leagueapplication.data.util.Resource
 import com.digitalcreativity.leagueapplication.ui.competitions.CompetitionsViewModel
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class CompetitionDetailsViewModel(
-    networkHelper: NetworkHelper,
     comptId:Int,
     competitionDetailsApi: CompetitionDetailsApi,
     competitionsDao: CompetitionsDao
@@ -27,13 +31,25 @@ class CompetitionDetailsViewModel(
 
     init {
         competitionDetailsRepository = CompetitionDetailsRepositoryImpl
-            .create(networkHelper,comptId,
+            .create(comptId,
                 competitionDetailsApi, competitionsDao)
     }
 
-    fun getCompetitionDetails(){
+    fun getCompetitionDetails(): Flow<Resource<CompetitionDetailsResponse>> {
 
-        competitionDetailsRepository.getCompetitionDetails()
+        return competitionDetailsRepository.getCompetitionDetails()
+    }
+
+    fun getCompetitionDetailsFromLocal(): Flow<Competition> {
+
+        return competitionDetailsRepository.getCompetitionDetailsFromLocal()
+
+    }
+
+    fun getSeasonsFromLocal(): Flow<List<CurrentSeason>> {
+
+        return competitionDetailsRepository.getSeasonsFromLocal()
+
     }
 
     fun fetchData(){
@@ -42,7 +58,7 @@ class CompetitionDetailsViewModel(
         }
     }
 
-    inner class CompetitionDetailsViewModelFactory(val networkHelper: NetworkHelper,
+    internal class CompetitionDetailsViewModelFactory(
                                                    val comptId:Int,
                                                    val competitionDetailsApi: CompetitionDetailsApi,
                                                    val competitionsDao: CompetitionsDao)
@@ -50,7 +66,7 @@ class CompetitionDetailsViewModel(
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(CompetitionDetailsViewModel::class.java)){
-                CompetitionDetailsViewModel(networkHelper, comptId, competitionDetailsApi, competitionsDao)  as T
+                CompetitionDetailsViewModel(comptId, competitionDetailsApi, competitionsDao)  as T
             }else
                 throw IllegalArgumentException("ViewModel not found")
         }
