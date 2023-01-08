@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.digitalcreativity.leagueapplication.R
-import com.digitalcreativity.leagueapplication.data.model.Competition
 import com.digitalcreativity.leagueapplication.data.model.CurrentSeason
 import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsApi
+import com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsResponse
 import com.digitalcreativity.leagueapplication.data.util.Status
 import com.digitalcreativity.leagueapplication.databinding.FragmentCompetitionDetailsBinding
 import com.digitalcreativity.leagueapplication.ui.BaseFragment
@@ -99,12 +99,12 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
 
                         val data = resource.data
 
-                        updateUiComponents(data?.competitionInfo)
+                        updateUiComponents(data)
                         updateSeasonsUiList(data?.seasons)
 
 
                         Log.d(TAG, "getCompetitionDetails: " +
-                                "detail = ${Gson().toJson(resource.data)}")
+                                "detail = ${Gson().toJson(data)}")
                     }
                     Status.ERROR ->
                         context?.let { showErrorMessage(it, resource.message?:"Unknown error") }
@@ -121,7 +121,7 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.getCompetitionDetailsFromLocal().collect { details ->
 
-                updateUiComponents(details)
+//                updateUiComponents(details)
 
             }
         }
@@ -137,20 +137,20 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
         }
     }
 
-    private fun updateUiComponents(competition: Competition?) {
+    private fun updateUiComponents(competitionDetail: CompetitionDetailsResponse?) {
 
-        activity?.setTitle(competition?.name)
+        activity?.title = competitionDetail?.name
+
 
         with(binding){
-            this.competition = competition
-
+            this.competitionDetail = competitionDetail
 
 
             try {
 
                 Picasso.get()
 
-                    .load(competition?.emblemUrl)
+                    .load(competitionDetail?.emblemUrl)
                     .placeholder(R.mipmap.ic_placeholder)
                     .into(competitionImageView)
             }catch (e:Exception){

@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="competition"
-            type="com.digitalcreativity.leagueapplication.data.model.Competition" />
+            name="competitionDetail"
+            type="com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsResponse" />
 
     </data>
 
@@ -30,10 +30,10 @@
             android:id="@+id/competition_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{competitionDetail.area.a_name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@{competition.area.a_name}"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/competition_image_view" />
 
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/competition_code"
-            android:text="@{competition.code}"
+            android:text="@{competitionDetail.code}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +52,7 @@
             android:id="@+id/competition_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{competition.plan}"
+            android:text="@{competitionDetail.plan}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
