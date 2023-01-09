@@ -38,7 +38,7 @@ open class CompetitionsDaoTest {
     private lateinit var competitionsDb:LeagueDatabase
     private lateinit var competitionsDao: CompetitionsDao
 
-    @Spy
+    @Mock
     private lateinit var observer: Observer<List<Competition>>
 
     @Throws(Exception::class)
