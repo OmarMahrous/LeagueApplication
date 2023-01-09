@@ -10,6 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CompetitionsDao {
 
+    @VisibleForTesting
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllCompetitions(competitionList: List<Competition?>?)
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCompetitions(competitionList: List<Competition?>?)
