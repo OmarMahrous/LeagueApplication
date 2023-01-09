@@ -37,4 +37,7 @@ interface CompetitionsDao {
     @Query("DELETE FROM competition_table")
     suspend fun deleteAllCompetitions()
 
+    @Query("DELETE FROM season_table")
+    suspend fun deleteAllSeasons()
+
 }

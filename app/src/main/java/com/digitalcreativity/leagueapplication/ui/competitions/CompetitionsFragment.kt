@@ -20,6 +20,7 @@ import com.digitalcreativity.leagueapplication.data.util.Status
 import com.digitalcreativity.leagueapplication.databinding.FragmentCompetitionsBinding
 import com.digitalcreativity.leagueapplication.di.appModule
 import com.digitalcreativity.leagueapplication.ui.BaseFragment
+import com.digitalcreativity.leagueapplication.ui.MainActivity
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
 import org.koin.android.ext.android.inject
 import retrofit2.Retrofit
@@ -49,6 +50,8 @@ class CompetitionsFragment : BaseFragment(R.layout.fragment_competitions) {
 
         _binding = FragmentCompetitionsBinding.inflate(inflater, container, false)
 
+        (requireActivity() as MainActivity).title = getString(R.string.competitions)
+
         initRecyclerView()
 
         initViewModel()
@@ -58,7 +61,7 @@ class CompetitionsFragment : BaseFragment(R.layout.fragment_competitions) {
 
 
     private fun initRecyclerView() {
-        listAdapter = CompetitionsAdapter(findNavController())
+        listAdapter = context?.let { CompetitionsAdapter(it,findNavController()) }
         binding.competitionsRecyclerView.adapter = listAdapter
     }
 

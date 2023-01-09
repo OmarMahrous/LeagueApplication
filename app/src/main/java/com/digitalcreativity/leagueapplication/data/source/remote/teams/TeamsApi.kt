@@ -6,7 +6,7 @@ import retrofit2.http.Path
 
 interface TeamsApi {
 
-    @GET("competitions/{comptId}/teams")
-    suspend fun getTeams(@Path("id")comptId: Int) : Response<TeamsResponse>
+    @GET("competitions/{id}/teams")
+    suspend fun getTeams(@Path("id")id: Int) : Response<TeamsResponse>
 
 }

@@ -1,5 +1,6 @@
 package com.digitalcreativity.leagueapplication.ui.competitions.competition_details
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.digitalcreativity.leagueapplication.R
 import com.digitalcreativity.leagueapplication.data.model.CurrentSeason
 import com.digitalcreativity.leagueapplication.databinding.SeasonListItemBinding
+import com.digitalcreativity.leagueapplication.ui.util.ImageUrlUtil
 import com.squareup.picasso.Picasso
 
-class SeasonsAdapter():
+class SeasonsAdapter(val context: Context):
     ListAdapter<CurrentSeason, SeasonsAdapter.SeasonsViewHolder>(DiffCallback()) {
 
     private  val TAG = "SeasonsAdapter"
@@ -30,12 +32,17 @@ class SeasonsAdapter():
                 if (winner!=null) {
 
                     try {
+                        val imageUrl = winner.crestUrl
 
-                        Picasso.get()
+                        if (imageUrl?.endsWith("svg") == true){
+                            ImageUrlUtil.loadSvgImageFromUrl(context, imageUrl, winnerImageView)
+                        }else {
+                            Picasso.get()
 
-                            .load(winner.crestUrl)
-                            .placeholder(R.mipmap.ic_placeholder)
-                            .into(winnerImageView)
+                                .load(imageUrl)
+                                .placeholder(R.mipmap.ic_placeholder)
+                                .into(winnerImageView)
+                        }
                     } catch (e: Exception) {
                         Log.e(TAG, "bind: error load image : ${e.message}")
                     }

@@ -3,32 +3,34 @@ package com.digitalcreativity.leagueapplication.ui.teams
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.digitalcreativity.leagueapplication.data.model.Team
 import com.digitalcreativity.leagueapplication.data.repository.teams.TeamsRepository
 import com.digitalcreativity.leagueapplication.data.repository.teams.TeamsRepositoryImpl
 import com.digitalcreativity.leagueapplication.data.source.local.LeagueDatabase
+import com.digitalcreativity.leagueapplication.data.source.local.teams.TeamsDao
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsApi
 import com.digitalcreativity.leagueapplication.data.source.remote.teams.TeamsApi
+import com.digitalcreativity.leagueapplication.data.util.Resource
 import com.digitalcreativity.leagueapplication.ui.competitions.competition_details.CompetitionDetailsViewModel
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class TeamsViewModel(
-    networkHelper: NetworkHelper,
-    comptId:Int,
     teamsApi: TeamsApi,
-    leagueDatabase: LeagueDatabase
+    teamsDao: TeamsDao
 ) : ViewModel() {
 
     private val teamsRepository: TeamsRepository
 
     init {
         teamsRepository = TeamsRepositoryImpl
-            .create(networkHelper,comptId,teamsApi, leagueDatabase)
+            .create(teamsApi, teamsDao)
     }
 
-    fun getTeams(){
-        teamsRepository.getTeams()
+    fun getTeams(): Flow<Resource<List<Team>>> {
+        return teamsRepository.getTeams()
     }
 
     fun fetchData(){
@@ -37,15 +39,13 @@ class TeamsViewModel(
         }
     }
 
-    inner class TeamsViewModelFactory(val networkHelper: NetworkHelper,
-                                                   val comptId:Int,
-                                                   val teamsApi: TeamsApi,
-                                                   val leagueDatabase: LeagueDatabase)
+    internal class TeamsViewModelFactory(val teamsApi: TeamsApi,
+                                         val teamsDao: TeamsDao)
         : ViewModelProvider.Factory {
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(TeamsViewModel::class.java)){
-                TeamsViewModel(networkHelper, comptId, teamsApi, leagueDatabase)  as T
+                TeamsViewModel(teamsApi, teamsDao)  as T
             }else
                 throw IllegalArgumentException("ViewModel not found")
         }

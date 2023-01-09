@@ -1,4 +1,4 @@
-package com.digitalcreativity.leagueapplication.ui.teams
+package com.digitalcreativity.leagueapplication.ui.teams.team_details
 
 import androidx.fragment.app.Fragment
 import com.digitalcreativity.leagueapplication.R

@@ -8,7 +8,7 @@ import com.digitalcreativity.leagueapplication.data.model.Team
 import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
 import com.digitalcreativity.leagueapplication.data.source.local.teams.TeamsDao
 
-@Database(entities = [Competition::class, Team::class, CurrentSeason::class], version = 7)
+@Database(entities = [Competition::class, Team::class, CurrentSeason::class], version = 8)
 abstract class LeagueDatabase : RoomDatabase() {
 
     abstract fun competitionsDao():CompetitionsDao

@@ -7,7 +7,7 @@ import com.digitalcreativity.leagueapplication.data.util.DataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class TeamsLocalSource(val leagueDatabase: LeagueDatabase) : DataSource<List<Team>> {
+class TeamsLocalSource(val teamsDao: TeamsDao) : DataSource<List<Team>> {
 
     private val mError: MutableStateFlow<String?> = MutableStateFlow("")
 
@@ -15,7 +15,7 @@ class TeamsLocalSource(val leagueDatabase: LeagueDatabase) : DataSource<List<Tea
 
     suspend fun saveTeams(teamList: List<Team>?) {
         try {
-            leagueDatabase.teamsDao().insertTeams(teamList)
+            teamsDao.insertTeams(teamList)
         } catch (e: Exception) {
             e.printStackTrace()
             mError.value = (e.message)
@@ -23,12 +23,12 @@ class TeamsLocalSource(val leagueDatabase: LeagueDatabase) : DataSource<List<Tea
     }
 
     fun getTeams(): List<Team> {
-        return leagueDatabase.teamsDao().getTeams()
+        return teamsDao.getTeams()
     }
 
     override fun getData(): Flow<List<Team>> {
 
-        return leagueDatabase.teamsDao().getTeamsFlow()
+        return teamsDao.getTeamsFlow()
 
     }
 

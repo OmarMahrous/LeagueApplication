@@ -8,7 +8,7 @@
     <fragment android:id="@+id/competitions_fragment"
         android:name="com.digitalcreativity.leagueapplication.ui.competitions.CompetitionsFragment"
         tools:layout="@layout/fragment_competitions"
-        android:label="@string/competitions">
+        >
         <action android:id="@+id/action_competitionsFragment_to_competitionDetailsFragment"
             app:destination="@id/competition_details_fragment"/>
     </fragment>
@@ -16,8 +16,8 @@
     <fragment android:id="@+id/competition_details_fragment"
         android:name="com.digitalcreativity.leagueapplication.ui.competitions.competition_details.CompetitionDetailsFragment"
         tools:layout="@layout/fragment_competition_details">
-        <action android:id="@+id/action_competitionDetailsFragment_to_teamDetailsFragment"
-            app:destination="@id/team_details_fragment"/>
+        <action android:id="@+id/action_competitionDetailsFragment_to_teamsFragment"
+            app:destination="@id/teams_fragment"/>
 
         <argument android:name="competitionId"
             app:nullable="false"
@@ -26,10 +26,14 @@
 
     </fragment>
 
+    <fragment android:id="@+id/teams_fragment"
+        android:name="com.digitalcreativity.leagueapplication.ui.teams.TeamsFragment"
+        tools:layout="@layout/fragment_teams"/>
+
     <fragment android:id="@+id/team_details_fragment"
-        android:name="com.digitalcreativity.leagueapplication.ui.teams.TeamDetailsFragment"
+        android:name="com.digitalcreativity.leagueapplication.ui.teams.team_details.TeamDetailsFragment"
         tools:layout="@layout/fragment_team_details"
-        android:label="@string/team_details">
+        >
 
         <argument android:name="teamId"
             app:nullable="false"

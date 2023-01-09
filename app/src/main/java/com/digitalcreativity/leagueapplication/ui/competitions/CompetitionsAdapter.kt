@@ -12,10 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.digitalcreativity.leagueapplication.R
 import com.digitalcreativity.leagueapplication.data.model.Competition
 import com.digitalcreativity.leagueapplication.databinding.CompetitionListItemBinding
+import com.digitalcreativity.leagueapplication.ui.util.ImageUrlUtil
 import com.digitalcreativity.leagueapplication.ui.util.ScreensNavigator
 import com.squareup.picasso.Picasso
 
-class CompetitionsAdapter(val navController: NavController
+class CompetitionsAdapter(
+    val context: Context,
+    val navController: NavController
 ): ListAdapter<Competition, CompetitionsAdapter.CompetitionsViewHolder>(DiffCallback()) {
 
     private  val TAG = "CompetitionsAdapter"
@@ -31,11 +34,17 @@ class CompetitionsAdapter(val navController: NavController
 
                 try {
 
+                    val imageUrl = competition.emblemUrl
+
+                    if (imageUrl?.endsWith("svg") == true){
+                        ImageUrlUtil.loadSvgImageFromUrl(context, imageUrl, competitionImageView)
+                    }else{
                     Picasso.get()
 
-                        .load(competition.emblemUrl)
+                        .load(imageUrl)
                         .placeholder(R.mipmap.ic_placeholder)
                         .into(competitionImageView)
+                }
                 }catch (e:Exception){
                     Log.e(TAG, "bind: error load image : ${e.message}" )
                 }

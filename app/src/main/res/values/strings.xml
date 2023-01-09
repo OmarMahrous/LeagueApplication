@@ -6,4 +6,5 @@
     <string name="teams">Teams</string>
     <string name="seasons">Seasons</string>
     <string name="no_winner">No Winner</string>
+    <string name="show_teams">Show teams</string>
 </resources>

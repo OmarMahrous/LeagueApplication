@@ -17,10 +17,10 @@ class ScreensNavigator {
             navController.navigate(action)
         }
 
-        fun navigateToTeamDetails(navController: NavController, teamId:Int){
+        fun navigateToTeamsPage(navController: NavController, teamId:Int){
 
             val action = CompetitionDetailsFragmentDirections
-                .actionCompetitionDetailsFragmentToTeamDetailsFragment(teamId)
+                .actionCompetitionDetailsFragmentToTeamsFragment()
             navController.navigate(action)
         }
 

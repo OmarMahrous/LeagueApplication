@@ -112,7 +112,7 @@ class CompetitionDetailsRepositoryImpl : CompetitionDetailsRepository{
     }
 
     private suspend fun saveSeasonsInCache(seasonList: List<CurrentSeason?>?) {
-
+        localDataSource.deleteAllSeasons() // Reset data
         localDataSource.saveSeasons(seasonList)
     }
 

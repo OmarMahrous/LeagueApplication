@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.digitalcreativity.leagueapplication.R
 import com.digitalcreativity.leagueapplication.data.model.CurrentSeason
 import com.digitalcreativity.leagueapplication.data.source.local.competitions.CompetitionsDao
@@ -15,6 +16,8 @@ import com.digitalcreativity.leagueapplication.data.source.remote.competitions.d
 import com.digitalcreativity.leagueapplication.data.util.Status
 import com.digitalcreativity.leagueapplication.databinding.FragmentCompetitionDetailsBinding
 import com.digitalcreativity.leagueapplication.ui.BaseFragment
+import com.digitalcreativity.leagueapplication.ui.MainActivity
+import com.digitalcreativity.leagueapplication.ui.util.ScreensNavigator
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
@@ -44,6 +47,9 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
 
         _binding = FragmentCompetitionDetailsBinding.inflate(inflater, container, false)
 
+        binding.showTeamsBtn.setOnClickListener {
+            ScreensNavigator.navigateToTeamsPage(findNavController(), 0)
+        }
 
         initRecyclerView()
 
@@ -54,7 +60,7 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
 
 
     private fun initRecyclerView() {
-        seasonListAdapter = SeasonsAdapter()
+        seasonListAdapter = context?.let { SeasonsAdapter(it) }
         binding.seasonsRecyclerView.adapter = seasonListAdapter
     }
 
@@ -121,7 +127,23 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.getCompetitionDetailsFromLocal().collect { details ->
 
-//                updateUiComponents(details)
+                with( details){
+                    val competitionDetails = CompetitionDetailsResponse(
+                        id, area,
+                        name,
+                        code,
+                        emblemUrl,
+                        plan,
+                        currentSeason,
+                        null,
+                        numberOfAvailableSeasons,
+                        lastUpdated
+                    )
+
+                    updateUiComponents(competitionDetails)
+                }
+
+
 
             }
         }
@@ -139,12 +161,11 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
 
     private fun updateUiComponents(competitionDetail: CompetitionDetailsResponse?) {
 
-        activity?.title = competitionDetail?.name
+        (requireActivity() as MainActivity).title = competitionDetail?.name
 
 
         with(binding){
             this.competitionDetail = competitionDetail
-
 
             try {
 

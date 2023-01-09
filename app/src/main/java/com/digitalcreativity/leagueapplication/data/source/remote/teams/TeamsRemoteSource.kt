@@ -26,21 +26,26 @@ class TeamsRemoteSource(val teamsApi: TeamsApi) :
     }
 
     suspend fun fetch(comptId:Int){
-        val response = teamsApi.getTeams(comptId)
-        withContext(Dispatchers.Main){
-            if (response.isSuccessful){
-                val teamsResponse = response.body()
-                val dataCount = teamsResponse?.count
+        try {
+            val response = teamsApi.getTeams(comptId)
+            withContext(Dispatchers.Main){
+                if (response.isSuccessful){
+                    val teamsResponse = response.body()
+                    val dataCount = teamsResponse?.count
 
-                if (dataCount !=0){
-                    teamsResponse?.teams?.let { mDataApi.value = Resource.success(it) }
+                    if (dataCount !=0){
+                        teamsResponse?.teams?.let { mDataApi.value = Resource.success(it) }
+                    }else
+                        mDataApi.value = Resource.error(response.message())
                 }else
                     mDataApi.value = Resource.error(response.message())
-            }else
-                mDataApi.value = Resource.error(response.message())
 
 
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
         }
+
     }
 
 

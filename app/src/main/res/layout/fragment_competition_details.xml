@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/show_teams_btn"
             app:layout_constraintTop_toBottomOf="@+id/seasons_title"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/season_list_item" />
@@ -100,6 +100,17 @@
 <!--            app:layout_constraintBottom_toBottomOf="parent"-->
 <!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
 <!--            tools:listitem="@layout/team_list_item" />-->
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/show_teams_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="@string/show_teams"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -31,6 +31,10 @@ class CompetitionsLocalSource(val competitionsDao: CompetitionsDao) : DataSource
         }
     }
 
+    suspend fun deleteAllSeasons(){
+        competitionsDao.deleteAllSeasons()
+    }
+
     suspend fun deleteAllCompetitions(){
         competitionsDao.deleteAllCompetitions()
     }
