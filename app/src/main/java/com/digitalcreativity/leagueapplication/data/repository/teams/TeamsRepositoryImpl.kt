@@ -45,13 +45,9 @@ class TeamsRepositoryImpl : TeamsRepository {
     }
 
 
-    private fun getTeamsFromLocal(): Flow<Resource<List<Team>>> {
+    override fun getTeamsFromLocal(): Flow<List<Team>> {
 
-        val mutableStateFlow: MutableStateFlow<Resource<List<Team>>> =
-            MutableStateFlow(Resource.success(localDataSource.getTeams()))
-
-
-        return mutableStateFlow
+        return localDataSource.getData()
     }
 
     override fun getTeams(): Flow<Resource<List<Team>>> {
@@ -83,6 +79,7 @@ class TeamsRepositoryImpl : TeamsRepository {
     }
 
     private suspend fun saveDataInCache(teams: List<Team>?) {
+        localDataSource.deleteAllTeams() // Reset data
         localDataSource.saveTeams(teams)
     }
 

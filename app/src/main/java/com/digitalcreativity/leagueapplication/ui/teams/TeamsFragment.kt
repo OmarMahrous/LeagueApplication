@@ -83,7 +83,7 @@ class TeamsFragment  : BaseFragment(R.layout.fragment_teams) {
         if (networkHelper.isNetworkConnected())
             getTeams()
         else
-            getCompetitionsFromLocal()
+            getTeamsFromLocal()
     }
 
     private fun fetchTeams(){
@@ -113,16 +113,15 @@ class TeamsFragment  : BaseFragment(R.layout.fragment_teams) {
         }
     }
 
-    private fun getCompetitionsFromLocal(){
-//        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-//            viewModel.getCompetitionsFromLocal().collect { list ->
-//
-//
-//                Log.d(TAG, "getCompetitionsFromLocal: list = ${list.size}")
-//                updateUiListComponent(list)
-//
-//            }
-//        }
+    private fun getTeamsFromLocal(){
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.getTeamsFromLocal().collect { list ->
+
+                Log.d(TAG, "getTeamsFromLocal: list = ${list.size}")
+
+                updateUiListComponent(list)
+            }
+        }
 
     }
 

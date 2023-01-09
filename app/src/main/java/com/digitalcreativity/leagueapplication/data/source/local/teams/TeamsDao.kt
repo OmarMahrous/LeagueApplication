@@ -13,6 +13,8 @@ interface TeamsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTeams(teamList: List<Team>?)
 
+    @Query("DELETE FROM team_table")
+    suspend fun deleteAllTeams()
 
     @Query("SELECT * FROM team_table")
     fun getTeamsFlow(): Flow<List<Team>>

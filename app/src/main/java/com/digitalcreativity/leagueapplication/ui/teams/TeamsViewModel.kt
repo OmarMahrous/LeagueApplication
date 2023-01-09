@@ -33,6 +33,10 @@ class TeamsViewModel(
         return teamsRepository.getTeams()
     }
 
+    fun getTeamsFromLocal(): Flow<List<Team>> {
+        return teamsRepository.getTeamsFromLocal()
+    }
+
     fun fetchData(){
         viewModelScope.launch(Dispatchers.IO) {
             teamsRepository.fetchData()

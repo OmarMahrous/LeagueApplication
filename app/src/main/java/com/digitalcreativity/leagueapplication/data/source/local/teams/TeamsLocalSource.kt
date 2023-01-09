@@ -22,8 +22,8 @@ class TeamsLocalSource(val teamsDao: TeamsDao) : DataSource<List<Team>> {
         }
     }
 
-    fun getTeams(): List<Team> {
-        return teamsDao.getTeams()
+    suspend fun deleteAllTeams(){
+        teamsDao.deleteAllTeams()
     }
 
     override fun getData(): Flow<List<Team>> {
