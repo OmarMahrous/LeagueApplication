@@ -77,7 +77,7 @@ Add 'X-Auth-Token' in the headers of your requests
 
 link to demo or APK
 
-https://drive.google.com/file/d/1VBs7_cA3rzT18Uu5dSYAk6uDxZ0gXRRY/view?usp=share_link
+https://drive.google.com/file/d/1ig0KDlGbqa7x0-GAViDoLyjc2r1lEOEw/view?usp=share_link
 ## Features
 
 - show a list of all the Competitions,
