@@ -129,11 +129,24 @@ class TeamDetailsFragment : StickyHeaderBottomSheetDialogFragment() {
 
     private fun getTeamDetailsFromLocal(){
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.getTeamDetailsFromLocal().collect { list ->
+            viewModel.getTeamDetailsFromLocal().collect { team ->
 
-//                Log.d(TAG, "getTeamsFromLocal: list = ${list.size}")
 
-//                updateUiListComponent(list)
+                with(team) {
+                    val teamDetails = TeamDetailsResponse(id
+                    ,area
+                    ,name
+                    ,tla
+                    ,crestUrl
+                    ,address
+                    ,phone
+                    ,email
+                    ,null
+                    ,founded
+                    ,venue)
+
+                    updateDetailUiComponents(teamDetails)
+                }
             }
         }
 

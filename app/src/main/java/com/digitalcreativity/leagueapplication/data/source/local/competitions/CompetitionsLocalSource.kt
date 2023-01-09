@@ -39,11 +39,6 @@ class CompetitionsLocalSource(val competitionsDao: CompetitionsDao) : DataSource
         competitionsDao.deleteAllCompetitions()
     }
 
-     fun getCompetitions(): List<Competition?>? {
-        return competitionsDao.getCompetitions()
-    }
-
-
     fun getCompetitionById(comptId:Int): Flow<Competition> {
         return competitionsDao.getCompetitionById(comptId)
     }

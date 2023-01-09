@@ -10,11 +10,15 @@ class ImageUrlUtil {
 
     companion object{
         fun loadSvgImageFromUrl(context: Context, imageUrl: String, teamImageView: ImageView) {
-            GlideToVectorYou
-                .init()
-                .with(context)
-                .setPlaceHolder(R.mipmap.ic_placeholder, R.mipmap.ic_placeholder)
-                .load(Uri.parse(imageUrl), teamImageView);
+            try {
+                GlideToVectorYou
+                    .init()
+                    .with(context)
+                    .setPlaceHolder(R.mipmap.ic_placeholder, R.mipmap.ic_placeholder)
+                    .load(Uri.parse(imageUrl), teamImageView);
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
         }
     }
 
