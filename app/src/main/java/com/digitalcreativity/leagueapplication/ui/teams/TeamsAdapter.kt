@@ -14,6 +14,7 @@ import com.digitalcreativity.leagueapplication.R
 import com.digitalcreativity.leagueapplication.data.model.Team
 import com.digitalcreativity.leagueapplication.databinding.TeamListItemBinding
 import com.digitalcreativity.leagueapplication.ui.util.ImageUrlUtil
+import com.digitalcreativity.leagueapplication.ui.util.ScreensNavigator
 import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import com.squareup.picasso.Picasso
 
@@ -72,14 +73,14 @@ class TeamsAdapter(
         val currentItem = getItem(position)
         holder.bind(currentItem)
 
-//        holder.itemView.setOnClickListener {
-//            currentItem?.let {
-//                    item->item.id?.let { id ->
-//                ScreensNavigator.navigateToCompetitionDetails(navController, id)
-//            }
-//            }
-//
-//        }
+        holder.itemView.setOnClickListener {
+            currentItem?.let {
+                    item->item.id?.let { id ->
+                    ScreensNavigator.navigateToTeamDetails(navController, id)
+                }
+            }
+
+        }
 
     }
 

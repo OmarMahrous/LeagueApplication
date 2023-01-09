@@ -48,7 +48,7 @@ class CompetitionDetailsFragment : BaseFragment(R.layout.fragment_competition_de
         _binding = FragmentCompetitionDetailsBinding.inflate(inflater, container, false)
 
         binding.showTeamsBtn.setOnClickListener {
-            ScreensNavigator.navigateToTeamsPage(findNavController(), 0)
+            ScreensNavigator.navigateToTeamsPage(findNavController())
         }
 
         initRecyclerView()

@@ -21,3 +21,9 @@ data class Team(val id:Int?,
                 val lastUpdated:String?,
                 @PrimaryKey(autoGenerate = true) val teamId: Int
 )
+
+data class Squad(val id:Int?,
+                 val name:String?,
+                 val position:String?,
+                 val nationality:String?
+)

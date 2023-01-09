@@ -32,6 +32,10 @@ class TeamsLocalSource(val teamsDao: TeamsDao) : DataSource<List<Team>> {
 
     }
 
+    fun getTeamById(id:Int): Flow<Team>{
+        return teamsDao.getTeamById(id)
+    }
+
     override fun onError(): Flow<String?> {
         return mError
     }

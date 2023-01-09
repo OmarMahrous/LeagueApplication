@@ -19,7 +19,8 @@ interface TeamsDao {
     @Query("SELECT * FROM team_table")
     fun getTeamsFlow(): Flow<List<Team>>
 
-    @Query("SELECT * FROM team_table")
-    fun getTeams(): List<Team>
 
+
+    @Query("SELECT * FROM team_table WHERE id == :teamId")
+    fun getTeamById(teamId:Int): Flow<Team>
 }

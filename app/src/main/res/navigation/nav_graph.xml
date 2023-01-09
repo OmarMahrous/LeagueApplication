@@ -28,9 +28,18 @@
 
     <fragment android:id="@+id/teams_fragment"
         android:name="com.digitalcreativity.leagueapplication.ui.teams.TeamsFragment"
-        tools:layout="@layout/fragment_teams"/>
+        tools:layout="@layout/fragment_teams">
 
-    <fragment android:id="@+id/team_details_fragment"
+        <action android:id="@+id/action_teamsFragment_to_teamDetailsFragment"
+            app:destination="@id/team_details_fragment"/>
+
+        <argument android:name="teamId"
+            app:nullable="false"
+            app:argType="integer"
+            />
+    </fragment>
+
+    <dialog android:id="@+id/team_details_fragment"
         android:name="com.digitalcreativity.leagueapplication.ui.teams.team_details.TeamDetailsFragment"
         tools:layout="@layout/fragment_team_details"
         >
@@ -40,6 +49,6 @@
             app:argType="integer"
             />
 
-    </fragment>
+    </dialog>
 
 </navigation>

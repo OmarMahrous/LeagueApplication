@@ -3,6 +3,7 @@ package com.digitalcreativity.leagueapplication.ui.util
 import androidx.navigation.NavController
 import com.digitalcreativity.leagueapplication.ui.competitions.CompetitionsFragmentDirections
 import com.digitalcreativity.leagueapplication.ui.competitions.competition_details.CompetitionDetailsFragmentDirections
+import com.digitalcreativity.leagueapplication.ui.teams.TeamsFragmentDirections
 
 
 class ScreensNavigator {
@@ -17,10 +18,16 @@ class ScreensNavigator {
             navController.navigate(action)
         }
 
-        fun navigateToTeamsPage(navController: NavController, teamId:Int){
+        fun navigateToTeamsPage(navController: NavController){
 
             val action = CompetitionDetailsFragmentDirections
-                .actionCompetitionDetailsFragmentToTeamsFragment()
+                .actionCompetitionDetailsFragmentToTeamsFragment(0)
+            navController.navigate(action)
+        }
+
+        fun navigateToTeamDetails(navController: NavController, teamId:Int){
+            val action = TeamsFragmentDirections
+                .actionTeamsFragmentToTeamDetailsFragment(teamId)
             navController.navigate(action)
         }
 

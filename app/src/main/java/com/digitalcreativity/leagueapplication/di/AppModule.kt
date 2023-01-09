@@ -5,6 +5,7 @@ import com.digitalcreativity.leagueapplication.data.source.remote.ApiGenerator
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.CompetitionsApi
 import com.digitalcreativity.leagueapplication.data.source.remote.competitions.details.CompetitionDetailsApi
 import com.digitalcreativity.leagueapplication.data.source.remote.teams.TeamsApi
+import com.digitalcreativity.leagueapplication.data.source.remote.teams.team_details.TeamDetailsApi
 import com.digitalcreativity.leagueapplication.util.NetworkHelper
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -27,6 +28,10 @@ val appModule = module {
         createWebService<TeamsApi>(retrofit = get())
     }
 
+    single {
+        createWebService<TeamDetailsApi>(retrofit = get())
+    }
+
         single { provideNetworkHelper(androidContext()) }
     }
 
@@ -36,11 +41,6 @@ private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit{
 }
 
 private fun provideOkHttpClient()=ApiGenerator.addOkHttpClient()
-
-//private fun provideCompetitionsApi(retrofit: Retrofit): CompetitionsApi = retrofit.create(CompetitionsApi::class.java)
-//private fun provideCompetitionDetailsApi(retrofit: Retrofit): CompetitionDetailsApi = retrofit.create(CompetitionDetailsApi::class.java)
-//private fun provideTeamsApi(retrofit: Retrofit): TeamsApi = retrofit.create(TeamsApi::class.java)
-
 
 /* function to build our Retrofit service */
 inline fun <reified T> createWebService(

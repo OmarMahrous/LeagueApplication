@@ -93,6 +93,8 @@ dependencies {
 
     implementation 'com.github.2coffees1team:GlideToVectorYou:v2.0.0'
 
+    implementation 'com.github.kshitijskumar:StickyHeaderBottomSheet:1.0.1'
+
 
     // Koin for Android
     implementation "io.insert-koin:koin-android:$koinVersion"
